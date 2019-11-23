@@ -1,18 +1,23 @@
 //Takes in a 4bit pc_input and returns a 32bit value at pc_input in memory
-module fetch(pc_input, start, pc_output, stage1, stage2);
+module fetch(pc_input, start, pc_output, stage1, stage2, clock);
 
 input [3:0]pc_input;
-input start;
+input start,clock;
 output reg[31:0]pc_output;
 output reg stage2,stage1;
 reg [31:0]instruction[7:0];
 
-always @(posedge start or posedge stage1)
-begin
+initial begin
     $readmemb("fact.dat", instruction);
+end
+
+always @(posedge clock)
+begin
+    if(start == 1 || stage1 == 1) begin
     pc_output = instruction[pc_input];
     stage1 = 0;
     stage2 = 1;
+    end
     //$display("Memory [%0d] = %b", pc_input, pc_output);
 end
 endmodule
