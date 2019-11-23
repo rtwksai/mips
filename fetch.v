@@ -5,7 +5,7 @@ input [3:0]pc_input;
 input start,clock;
 output reg[31:0]pc_output;
 output reg stage2,stage1;
-reg [31:0]instruction[7:0];
+reg [31:0]instruction[8:0];
 
 initial begin
     $readmemb("fact.dat", instruction);
