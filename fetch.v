@@ -25,6 +25,6 @@ endmodule
 
 //     fetch uut(pc_input, start, stage5, pc_output, stage1);
 //     initial begin
-//         pc_input = 0001; start = 1; stage5 = 0;
+//         pc_input = 4'b0111; start = 1; stage5 = 0;
 //     end
 // endmodule
