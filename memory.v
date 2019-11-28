@@ -20,7 +20,7 @@ module memory(memWrite,memRead,memaddress,invalue,outvalue,stage4,stage5,clock);
                 outvalue=Memory[memaddress];
             end
             stage4 = 0;
-            stage5 = 0;
+            stage5 = 1;
         end
     end
 endmodule

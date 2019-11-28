@@ -1,63 +1,70 @@
-module alu(A, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO, result);
+module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO, result,stage3,stage4,clock);
 
     // A is the ALU's first input
     // B is the ALU's second input
 
 
-    input [31:0]A;
+    input [31:0]read_data1;
     input [31:0]read_data2;
     input [5:0]alu_funct;
     input [1:0]alu_op;
     input [31:0]sign_extend;
     input ALU_Src;
+    input clock;
+    output reg stage3,stage4;
     
     reg [31:0]B;
     output reg ZERO;
     output reg [31:0]result;
 
-    always@(*)
+    always@(posedge clock)
     begin
-        if(ALU_Src == 1)
+        if(stage3 == 1)
         begin
-            B = sign_extend;
-        end
-        else if(ALU_Src == 0)
-        begin
-            B = read_data2;
-        end
+            if(ALU_Src == 1)
+            begin
+                B = sign_extend;
+            end
+            else if(ALU_Src == 0)
+            begin
+                B = read_data2;
+            end
 
-        if(alu_op == 2'b10 || alu_op == 2'b11)
-        begin
-            if(alu_funct == 6'b100100)
+            if(alu_op == 2'b10 || alu_op == 2'b11)
             begin
-                result = A&B;
+                if(alu_funct == 6'b100100)
+                begin
+                    result = read_data1&B;
+                end
+                else if(alu_funct == 6'b100101)
+                begin
+                    result = read_data1|B;
+                end
+                else if(alu_funct == 6'b100000)
+                begin
+                    result = read_data1+B;
+                end
+                else if(alu_funct == 6'b100010)
+                begin
+                    result = read_data1-B;
+                end
+                else if(alu_funct == 6'b011000)
+                begin
+                    result = read_data1*B;
+                end
             end
-            else if(alu_funct == 6'b100101)
+            else if(alu_op == 2'b00)
+            begin 
+                result = read_data1+B;
+            end
+            else if(alu_op == 2'b01)
             begin
-                result = A|B;
+                result = read_data1-B;
             end
-            else if(alu_funct == 6'b100000)
-            begin
-                result = A+B;
-            end
-            else if(alu_funct == 6'b100010)
-            begin
-                result = A-B;
-            end
-            else if(alu_funct == 6'b011000)
-            begin
-                result = A*B;
-            end
+            // $display("the result is : %0b", result);
+            stage3 = 0;
+            stage4 = 1;
         end
-        else if(alu_op == 2'b00)
-        begin 
-            result = A+B;
-        end
-        else if(alu_op == 2'b01)
-        begin
-            result = A-B;
-        end
-        // $display("the result is : %0b", result);
     end    
 endmodule
 
