@@ -11,6 +11,7 @@ output reg[4:0]rd;
 output reg[31:0]immediate;
 output reg [4:0]shamt;
 output reg [5:0]funct;
+//Control Outputs
 output reg regDest;
 output reg branch;
 output reg memRead;
@@ -21,8 +22,8 @@ output reg aluSrc;
 output reg regWrite;
 output reg endProgram;
 reg [31:0]register[31:0];
-// flags and temp variables
-integer flagr=0; //1 if 'R' Type instructiom 0 if 'I' type instruction
+//flags and temp variables
+integer flagR=0; //1 if 'R' Type instructiom 0 if 'I' type instruction
 
 initial begin
     rd = 5'b0;
@@ -48,7 +49,7 @@ begin
     opcode = instruction[31:26];
     if(opcode == 6'b000000)
     begin 
-        flagr = 1;
+        flagR = 1;
         rs = instruction[25:21];
         rt = instruction[20:16];
         rd = instruction[15:11];
@@ -57,7 +58,7 @@ begin
     end
     else
     begin
-        flagr = 0;
+        flagR = 0;
         rs = instruction[25:21];
         rt = instruction[20:16];
         immediate = immediate + instruction[15:0];  // can be error
@@ -131,6 +132,10 @@ begin
     begin
         endProgram = 1;
     end
+
+    //Takes in register address and outputs the values in the register to pass it to ALU
+    //Input for reg file read_reg1, read_reg2, write_reg, write_data and outputs are read data
+
 end
 endmodule
 
