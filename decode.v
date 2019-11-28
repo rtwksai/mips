@@ -1,6 +1,6 @@
 //Takes input from fetch and parses it and assigns appropriate register values
 
-module decode(instruction, clk, opcode, rs, rt, rd, immediate, shamt, funct, regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram);
+module decode(instruction, clk, opcode, rs, rt, rd, immediate, shamt, funct, regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram, read_data_1, read_data_2);
 
 input [31:0]instruction;
 input clk;
@@ -11,6 +11,7 @@ output reg[4:0]rd;
 output reg[31:0]immediate;
 output reg [4:0]shamt;
 output reg [5:0]funct;
+//Control Outputs
 output reg regDest;
 output reg branch;
 output reg memRead;
@@ -21,8 +22,13 @@ output reg aluSrc;
 output reg regWrite;
 output reg endProgram;
 reg [31:0]register[31:0];
-// flags and temp variables
-integer flagr=0; //1 if 'R' Type instructiom 0 if 'I' type instruction
+//Reg File 
+output reg [31:0]read_data_1;
+output reg [31:0]read_data_2;
+reg [4:0]write_reg;
+reg [31:0]write_data;
+//flags and temp variables
+integer flagR=0; //1 if 'R' Type instructiom 0 if 'I' type instruction
 
 initial begin
     rd = 5'b0;
@@ -48,7 +54,7 @@ begin
     opcode = instruction[31:26];
     if(opcode == 6'b000000)
     begin 
-        flagr = 1;
+        flagR = 1;
         rs = instruction[25:21];
         rt = instruction[20:16];
         rd = instruction[15:11];
@@ -57,13 +63,11 @@ begin
     end
     else
     begin
-        flagr = 0;
+        flagR = 0;
         rs = instruction[25:21];
         rt = instruction[20:16];
-        immediate = immediate + instruction[15:0];  // can be error
+        immediate = immediate + instruction[15:0];  
     end
-    $display("%b", instruction);
-    $display("%b, %b, %b, %b, %b, %b, %b", opcode, rs, rt, rd, shamt, funct, immediate);
 
     //Passing parsed input into CONTROL
     //R-Type instruction
@@ -131,7 +135,27 @@ begin
     begin
         endProgram = 1;
     end
+
+    //Takes in register addresses and outputs the values in the register to pass it to ALU
+    //Input for reg file read_reg1, read_reg2, write_data and control signal RegDest and outputs are read_data_1 and read_data_2
+    if(regDest == 1)
+    begin
+        write_reg = rd;
+    end
+    else if(regDest == 0)
+    begin
+        write_reg = rt;
+    end
+
+    read_data_1 = register[rs];
+    read_data_2 = register[rt];
+
+    $display("%b", instruction);
+    $display("%b, %b, %b, %b, %b, %b, %b", opcode, rs, rt, rd, shamt, funct, immediate);
+    $display("%b, %b, %b, %b, %b, %b, %b, %b, %b", regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram);
+    $display("%b, %b", read_data_1, read_data_2);
 end
+
 endmodule
 
 //Testbench to check
@@ -152,8 +176,10 @@ module dc_tb;
     wire memWrite;
     wire aluSrc;
     wire regWrite;
+    wire [31:0]read_data_1;
+    wire [31:0]read_data_2;
 
-    decode uut(instruction, clk, opcode, rs, rt, rd, immediate, shamt, funct, regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram);
+    decode uut(instruction, clk, opcode, rs, rt, rd, immediate, shamt, funct, regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram, read_data_1, read_data_2);
     initial begin
         instruction = 32'b10001110000100100000000000000000;
     end
