@@ -1,0 +1,40 @@
+$date
+	Sat Nov 23 16:07:31 2019
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_ALU $end
+$var wire 32 ! result [31:0] $end
+$var wire 1 " ZERO $end
+$var reg 32 # A [31:0] $end
+$var reg 32 $ B [31:0] $end
+$var reg 6 % alu_funct [5:0] $end
+$var reg 2 & alu_op [1:0] $end
+$scope module uut $end
+$var wire 32 ' A [31:0] $end
+$var wire 32 ( B [31:0] $end
+$var wire 6 ) alu_funct [5:0] $end
+$var wire 2 * alu_op [1:0] $end
+$var reg 1 " ZERO $end
+$var reg 32 + result [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx +
+bz *
+b11000 )
+b11001 (
+b11110 '
+b1x &
+b11000 %
+b11001 $
+b11110 #
+x"
+bx !
+$end
