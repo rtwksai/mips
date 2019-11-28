@@ -26,6 +26,7 @@ module mipsProcessor();
     wire [31:0]curInstruction;
     wire [31:0]resvalue;
     fetch module1(pc,start,curInstruction,stage1,stage2,clock);
+    decode module2();
     memory module4(memWrite,memRead,memaddress,resvalue,resvalue,stage4,stage5,clock);
     writeBack module5(controlWriteBack,regaddress,resvalue,stage5,start1,clock);
     initial begin
