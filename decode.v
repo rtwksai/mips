@@ -36,7 +36,6 @@ initial begin
     immediate = 31'b0;
     shamt = 5'b0;
     funct = 6'b0;
-    $readmemb("registers.dat", register);
     regDest = 0;
     branch = 0;
     memRead = 0;
@@ -53,6 +52,7 @@ always @(posedge clk)
 begin
 if(stage == 1) begin 
         //Parsing the input
+        $readmemb("registers.dat", register);
         opcode = instruction[31:26];
         if(opcode == 6'b000000)
         begin 

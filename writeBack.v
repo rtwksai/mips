@@ -7,17 +7,18 @@ module writeBack(regWrite,regDest,address1,address2,value,stage,clock);
     input clock;
     // output reg stage1,stage5;
     reg [31:0]registers[31:0];
-
+    initial begin
+        $readmemb("registers.dat",registers);
+    end
     always@(posedge clock) begin
         if(stage == 4) begin
-            $readmemb("registers.dat",registers);
-            if(regDest == 0) begin
+            if(regWrite == 1 && regDest == 0) begin
                 registers[address1]=value;
-                $writememb("register.dat",registers);
+                $writememb("registers.dat",registers);
             end
-            else if(regDest == 1) begin 
+            else if(regWrite == 1 && regDest == 1) begin 
                 registers[address2]=value;
-                $writememb("register.dat",registers);
+                $writememb("registers.dat",registers);
             end
         end
     end
