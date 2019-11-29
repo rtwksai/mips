@@ -1,10 +1,10 @@
 //Takes input from fetch and parses it and assigns appropriate register values
 
-module decode(instruction, clk, opcode, rs, rt, rd, immediate, shamt, funct, regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram, read_data_1, read_data_2,stage2,stage3);
+module decode(instruction, clk, opcode, rs, rt, rd, immediate, shamt, funct, regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram, read_data_1, read_data_2,stage);
 
 input [31:0]instruction;
 input clk;
-output reg stage2,stage3;
+input [2:0]stage;
 output reg[5:0]opcode;
 output reg[4:0]rs;
 output reg[4:0]rt;
@@ -36,7 +36,6 @@ initial begin
     immediate = 31'b0;
     shamt = 5'b0;
     funct = 6'b0;
-    $readmemb("registers.dat", register);
     regDest = 0;
     branch = 0;
     memRead = 0;
@@ -51,8 +50,9 @@ end
 
 always @(posedge clk)
 begin
-if(stage2 == 1) begin 
+if(stage == 1) begin 
         //Parsing the input
+        $readmemb("registers.dat", register);
         opcode = instruction[31:26];
         if(opcode == 6'b000000)
         begin 
@@ -152,12 +152,12 @@ if(stage2 == 1) begin
         read_data_1 = register[rs];
         read_data_2 = register[rt];
 
-        $display("%b", instruction);
-        $display("%b, %b, %b, %b, %b, %b, %b", opcode, rs, rt, rd, shamt, funct, immediate);
-        $display("%b, %b, %b, %b, %b, %b, %b, %b, %b", regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram);
-        $display("%b, %b", read_data_1, read_data_2);
-        stage2=0;
-        stage3=1;
+        //$display("%b", instruction);
+        //$display("%b, %b, %b, %b, %b, %b, %b", opcode, rs, rt, rd, shamt, funct, immediate);
+        //$display("%b, %b, %b, %b, %b, %b, %b, %b, %b", regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram);
+        //$display("%b, %b", read_data_1, read_data_2);
+        // stage2=0;
+        // stage3=1;
     end
 end
 

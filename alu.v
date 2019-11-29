@@ -1,4 +1,4 @@
-module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO, result,stage3,stage4,clock);
+module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO, result,stage,clock);
 
     // A is the ALU's first input
     // B is the ALU's second input
@@ -9,9 +9,10 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
     input [5:0]alu_funct;
     input [1:0]alu_op;
     input [31:0]sign_extend;
+    input [2:0] stage;
     input ALU_Src;
     input clock;
-    output reg stage3,stage4;
+    // output reg stage3,stage4;
     
     reg [31:0]B;
     output reg ZERO;
@@ -19,7 +20,7 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
 
     always@(posedge clock)
     begin
-        if(stage3 == 1)
+        if(stage == 2)
         begin
             if(ALU_Src == 1)
             begin
@@ -62,8 +63,6 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
                 result = read_data1-B;
             end
             // $display("the result is : %0b", result);
-            stage3 = 0;
-            stage4 = 1;
         end
     end    
 endmodule
