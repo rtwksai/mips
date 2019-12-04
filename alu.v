@@ -33,33 +33,47 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
                 B = read_data2;
             end
 
-            if(alu_op == 2'b10 || alu_op == 2'b11)
+            //R-Type Instructions
+            if(alu_op == 2'b00)
             begin
+                //AND
                 if(alu_funct == 6'b100100)
                 begin
                     result = read_data1&B;
                 end
+                //OR
                 else if(alu_funct == 6'b100101)
                 begin
                     result = read_data1|B;
                 end
+                //ADD
                 else if(alu_funct == 6'b100000)
                 begin
                     result = read_data1+B;
                 end
+                //SUB
                 else if(alu_funct == 6'b100010)
                 begin
                     result = read_data1-B;
                 end
+                //MUL
                 else if(alu_funct == 6'b011000)
                 begin
                     result = read_data1*B;
                 end
+                //DIV
+                else if(alu_funct == 6'b011010)
+                begin
+                    result = read_data1/B;
+                end
+
             end
-            else if(alu_op == 2'b00)
+            //ADDI, LW, SW
+            else if(alu_op == 2'b11)
             begin 
                 result = read_data1+B;
             end
+            //BEQ, BNE
             else if(alu_op == 2'b01)
             begin
                 result = read_data1-B;
@@ -82,8 +96,8 @@ endmodule
 
 // Testbench for ALU
 
-// `timescale 10ns/1ps
-// module tb_ALU;
+`timescale 10ns/1ps
+module tb_ALU;
 
 //     reg [31:0]A;
 //     reg [31:0]read_data2;
