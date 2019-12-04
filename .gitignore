@@ -1,5 +1,5 @@
 #Executables
-a.out
+*.out
 
 #VCD files
-.vcd
+*.vcd
