@@ -76,54 +76,57 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
             begin
                 ZERO = 0;
             end
+            branchValue = sign_extend;
         end
     end    
 endmodule
 
 // Testbench for ALU
 
-// `timescale 10ns/1ps
-// module tb_ALU;
+`timescale 10ns/1ps
+module tb_ALU;
 
-//     reg [31:0]A;
-//     reg [31:0]read_data2;
-//     reg [5:0]alu_funct;
-//     reg [1:0]alu_op;
-//     reg ALU_Src;
-//     reg [2:0]stage;
-//     reg [31:0]sign_extend;
-//     reg clock;
-//     wire ZERO;
-//     wire [31:0]result;
+    reg [31:0]A;
+    reg [31:0]read_data2;
+    reg [5:0]alu_funct;
+    reg [1:0]alu_op;
+    reg ALU_Src;
+    reg [2:0]stage;
+    reg [31:0]sign_extend;
+    reg clock;
+    wire ZERO;
+    wire [31:0]result;
+    wire [31:0]branchValue;
 
-//     alu uut(
-//         .read_data1(A),
-//         .read_data2(read_data2),
-//         .alu_funct(alu_funct),
-//         .ZERO(ZERO),
-//         .result(result),
-//         .alu_op(alu_op),
-//         .sign_extend(sign_extend),
-//         .ALU_Src(ALU_Src),
-//         .stage(stage),
-//         .clock(clock)
-//     );
+    alu uut(
+        .read_data1(A),
+        .read_data2(read_data2),
+        .alu_funct(alu_funct),
+        .ZERO(ZERO),
+        .result(result),
+        .alu_op(alu_op),
+        .sign_extend(sign_extend),
+        .ALU_Src(ALU_Src),
+        .stage(stage),
+        .clock(clock),
+        .branchValue(branchValue)
+    );
 
-//     initial 
-//     begin
-//     stage = 2;
-//     A = 25;
-//     read_data2 = 25;
-//     alu_funct = 6'b100000;
-//     alu_op = 2'b01;
-//     ALU_Src = 0;
-//     clock = 0;
-//     sign_extend = 64;
-//             #5;
-//     $display("the result is : %0b , %d", result, ZERO);
-//     end
-// always 
-// #3 clock = ~clock;
+    initial 
+    begin
+    stage = 2;
+    A = 25;
+    read_data2 = 25;
+    alu_funct = 6'b100000;
+    alu_op = 2'b01;
+    ALU_Src = 0;
+    clock = 0;
+    sign_extend = 64;
+            #5;
+    $display("the result is : %0b , %d, %b", result, ZERO, branchValue);
+    end
+always 
+#3 clock = ~clock;
 
-// endmodule
+endmodule
 
