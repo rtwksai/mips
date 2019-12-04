@@ -79,7 +79,7 @@ if(stage == 1) begin
             branch = 0;
             memRead = 0;
             memToReg = 0;
-            aluOP = 2'b1x;
+            aluOP = 2'b10;
             memWrite = 0;
             aluSrc = 0;
             regWrite = 1;
@@ -90,7 +90,7 @@ if(stage == 1) begin
             regDest = 0;
             branch = 0;
             memRead = 0;
-            memToReg = 1'bx; //Dont care taken as 0
+            memToReg = 1'b0; //Dont care taken as 0
             aluOP = 2'b00;
             memWrite = 1;
             aluSrc = 0;
@@ -102,7 +102,7 @@ if(stage == 1) begin
             regDest = 0;
             branch = 0;
             memRead = 1;
-            memToReg = 1; //Dont care taken as 0
+            memToReg = 0; //Dont care taken as 0
             aluOP = 2'b00;
             memWrite = 1;
             aluSrc = 1;
@@ -114,7 +114,7 @@ if(stage == 1) begin
             regDest = 0;
             branch = 1;
             memRead = 0;
-            memToReg = 1'bx;
+            memToReg = 1'b0;
             aluOP = 2'b01;
             memWrite = 0;
             aluSrc = 1;
@@ -126,7 +126,7 @@ if(stage == 1) begin
             regDest = 0;
             branch = 1;
             memRead = 0;
-            memToReg = 1'bx;
+            memToReg = 1'b0;
             aluOP = 2'b01;
             memWrite = 0;
             aluSrc = 1;
