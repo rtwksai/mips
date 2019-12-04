@@ -18,8 +18,8 @@ module setSignals(start,stage1,stage2,stage3,stage4,stage5);
 
 endmodule
 module mipsProcessor();
-    reg [3:0] pc;
-    reg start,clock;
+    wire [3:0] pc;
+    wire start,clock;
     wire stage1,stage2,stage3,stage4,stage5; //stages of MIPS processor
     //intermediate signals -->
     wire [5:0] opcode,funct;
@@ -32,24 +32,35 @@ module mipsProcessor();
     wire [5:0] address1,address2;
     wire [31:0]curInstruction;
     wire [31:0]resvalue;
+    
     setSignals initialModule(start,stage1,start2,start3,start4,start5);
     fetch fetchModule(pc,start,curInstruction,stage1,stage2,clock);
     decode decodeModule(curInstruction,clock,opcode,rs,rt,rd,immediate,shamt,funct,regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram,readData1,readData2,stage2,stage3);
     alu aluModule(readData1,readData2,funct,aluOP,immediate,aluSrc,zero,aluOut,stage3,stage4,clock);
     memory memoryModule(memWrite,memRead,memaddress,resvalue,resvalue,stage4,stage5,clock);
     writeBack writeBackModule(regWrite,regDest,address1,address2,resvalue,stage5,stage1,clock);
-    initial begin
-        $dumpfile("mips.vcd");
-        $dumpvars(0,mipsProcessor);
-       pc = 4'b0000;
-       #10;
-       start = 1;
-       clock = 0; 
-    end
-    always
-    begin
-        start = 0;
-        #5;
-        clock = ~clock;
-    end
+endmodule
+
+
+module tb_MIPS_PROCESSOR();
+
+
+mipsProcessor uut();
+
+initial 
+begin
+    $dumpfile("mips.vcd");
+    $dumpvars(0,mipsProcessor);
+    pc = 4'b0000;
+    #10;
+    start = 1;
+    clock = 0; 
+end
+always
+begin
+    start = 0;
+    #5;
+    clock = ~clock;
+end
+    
 endmodule
