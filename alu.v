@@ -95,9 +95,8 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
 endmodule
 
 // Testbench for ALU
-
-`timescale 10ns/1ps
-module tb_ALU;
+// `timescale 10ns/1ps
+// module tb_ALU;
 
 //     reg [31:0]A;
 //     reg [31:0]read_data2;

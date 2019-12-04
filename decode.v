@@ -142,8 +142,8 @@ if(stage == 1) begin
         //$display("%b, %b, %b, %b, %b, %b, %b", opcode, rs, rt, rd, shamt, funct, immediate);
         //$display("%b, %b, %b, %b, %b, %b, %b, %b, %b", regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram);
         //$display("%b, %b", read_data_1, read_data_2);
-        // stage2=0;
-        // stage3=1;
+        //stage2=0;
+        //stage3=1;
     end
 end
 
