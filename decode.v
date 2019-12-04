@@ -76,61 +76,47 @@ if(stage == 1) begin
         if(opcode == 6'b000000)
         begin
             regDest = 1;
-            branch = 0;
-            memRead = 0;
             memToReg = 0;
-            aluOP = 2'b1x;
-            memWrite = 0;
-            aluSrc = 0;
+            aluOP = 2'b00;
             regWrite = 1;
         end
         //Store
         else if(opcode == 6'b101011)
         begin
-            regDest = 0;
-            branch = 0;
-            memRead = 0;
-            memToReg = 1'bx; //Dont care taken as 0
-            aluOP = 2'b00;
+            aluOP = 2'b11;
             memWrite = 1;
-            aluSrc = 0;
+            aluSrc = 1;
             regWrite = 0;
         end
         //Load 
         else if(opcode == 6'b100011)
         begin 
-            regDest = 0;
-            branch = 0;
             memRead = 1;
-            memToReg = 1; //Dont care taken as 0
-            aluOP = 2'b00;
-            memWrite = 1;
+            memToReg = 1;
+            aluOP = 2'b11;
             aluSrc = 1;
             regWrite = 1;        
         end
         //BEQ
         else if(opcode == 6'b000100)
         begin
-            regDest = 0;
             branch = 1;
-            memRead = 0;
-            memToReg = 1'bx;
             aluOP = 2'b01;
-            memWrite = 0;
-            aluSrc = 1;
-            regWrite = 0;
+            aluSrc = 0;
         end
         //BNE
         else if(opcode == 6'b000101)
         begin
-            regDest = 0;
             branch = 1;
-            memRead = 0;
-            memToReg = 1'bx;
             aluOP = 2'b01;
-            memWrite = 0;
+            aluSrc = 0;
+        end
+        //ADDI
+        else if(opcode == 6'b001000)
+        begin
+            regWrite = 1;
+            aluOP = 2'b11;
             aluSrc = 1;
-            regWrite = 0;
         end
         //END
         else if(opcode == 6'b111111)
