@@ -1,4 +1,4 @@
-module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO, result,stage,clock,branchValue);
+module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO, result,stage,clock);
 
     // A is the ALU's first input
     // B is the ALU's second input
@@ -17,13 +17,13 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
     reg [31:0]B;
     output reg ZERO;
     output reg [31:0]result;
-    output reg [31:0]branchValue;
 
 
     always@(posedge clock)
     begin
         if(stage == 2)
         begin
+            result = 0;
             if(ALU_Src == 1)
             begin
                 B = sign_extend;
@@ -32,7 +32,6 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
             begin
                 B = read_data2;
             end
-
             //R-Type Instructions
             if(alu_op == 2'b00)
             begin
@@ -71,7 +70,14 @@ module alu(read_data1, read_data2, alu_funct, alu_op, sign_extend, ALU_Src, ZERO
             //ADDI, LW, SW
             else if(alu_op == 2'b11)
             begin 
-                result = read_data1+B;
+                if(B[31] == 0)
+                    result = read_data1+B;
+                else
+                    begin
+                        B = ~B;
+                        B = B + 1;
+                        result = read_data1 - B;
+                    end
             end
             //BEQ, BNE
             else if(alu_op == 2'b01)

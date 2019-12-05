@@ -4,14 +4,15 @@
 `include "writeBack.v"
 `include "memory.v"
 
-module mipsProcessor(reset,clock);
+module mipsProcessor(reset,clock,endl);
     reg [3:0]pc;
     input reset,clock;
     reg [2:0]stage; //stages of MIPS processor
     //intermediate signals -->
     wire [5:0] opcode,funct;
     wire [4:0] rs,rt,rd,shamt; 
-    wire [31:0]immediate,readData1,readData2,aluOut,memOut,branchValue;
+    wire [31:0]immediate,readData1,readData2,aluOut,memOut;
+    output reg endl;
     //<--
     wire regDest, branch, memRead, memToReg , memWrite, aluSrc, regWrite, zero, endProgram; // control signals
     wire [1:0]aluOP;
@@ -21,28 +22,30 @@ module mipsProcessor(reset,clock);
     // wire [31:0]resvalue;
     fetch fetchModule(pc,curInstruction,stage,clock);
     decode decodeModule(curInstruction,clock,opcode,rs,rt,rd,immediate,shamt,funct,regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram,readData1,readData2,stage);
-    alu aluModule(readData1,readData2,funct,aluOP,immediate,aluSrc,zero,aluOut,stage,clock,branchValue);
+    alu aluModule(readData1,readData2,funct,aluOP,immediate,aluSrc,zero,aluOut,stage,clock);
     memory memoryModule(memWrite,memRead,aluOut[7:0],readData2,memOut,stage,clock);
     writeBack writeBackModule(regWrite,memToReg,regDest,rt,rd,memOut,aluOut,stage,clock);
     initial begin
-       pc = 4'b1000;
+       pc = 4'b1010;
        stage = 3'b100;
     end
     always @ (negedge clock)
         begin
+        endl = endProgram;
         if(endProgram != 1)
             begin
                 stage = (stage + 1)%5;
                 if(stage == 0)
                     begin
-                        if(branch == 1)
+                        if(branch == 1 && zero == 0)
                             begin
-                                pc = (pc+1+branchValue)%9;
+                                pc = pc-immediate+1;
+                                pc = pc % 11;
                                 // pc = pc - 4;
                                 // pc = pc%9;
                             end
                         else
-                            pc = (pc + 1)%9;
+                            pc = (pc + 1)%11;
                     end
             end
         end
@@ -51,13 +54,19 @@ endmodule
 module mipsTb;
     reg clock;
     reg reset;
-    mipsProcessor mainModule(reset,clock);
+    wire endl;
+    mipsProcessor mainModule(reset,clock,endl);
     initial begin
         clock = 0;
         reset = 0;
         $dumpfile("mips.vcd");
         $dumpvars(0,mipsTb);
     end
-    always #5 clock = ~clock;
+    always 
+        begin
+            #5 clock = ~clock;
+            if(endl == 1)
+                $finish;
+        end
     always #100 reset = ~reset;
 endmodule
