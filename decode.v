@@ -76,61 +76,77 @@ if(stage == 1) begin
         if(opcode == 6'b000000)
         begin
             regDest = 1;
-            branch = 0;
-            memRead = 0;
             memToReg = 0;
+<<<<<<< HEAD
             aluOP = 2'b10;
             memWrite = 0;
             aluSrc = 0;
+=======
+            aluOP = 2'b00;
+>>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             regWrite = 1;
         end
         //Store
         else if(opcode == 6'b101011)
         begin
+<<<<<<< HEAD
             regDest = 0;
             branch = 0;
             memRead = 0;
             memToReg = 1'b0; //Dont care taken as 0
             aluOP = 2'b00;
+=======
+            aluOP = 2'b11;
+>>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             memWrite = 1;
-            aluSrc = 0;
+            aluSrc = 1;
             regWrite = 0;
         end
         //Load 
         else if(opcode == 6'b100011)
         begin 
-            regDest = 0;
-            branch = 0;
             memRead = 1;
+<<<<<<< HEAD
             memToReg = 1; //Dont care taken as 0
             aluOP = 2'b00;
             memWrite = 0;
+=======
+            memToReg = 1;
+            aluOP = 2'b11;
+>>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             aluSrc = 1;
             regWrite = 1;        
         end
         //BEQ
         else if(opcode == 6'b000100)
         begin
-            regDest = 0;
             branch = 1;
+<<<<<<< HEAD
             memRead = 0;
             memToReg = 1'b0;
+=======
+>>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             aluOP = 2'b01;
-            memWrite = 0;
-            aluSrc = 1;
-            regWrite = 0;
+            aluSrc = 0;
         end
         //BNE
         else if(opcode == 6'b000101)
         begin
-            regDest = 0;
             branch = 1;
+<<<<<<< HEAD
             memRead = 0;
             memToReg = 1'b0;
+=======
+>>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             aluOP = 2'b01;
-            memWrite = 0;
+            aluSrc = 0;
+        end
+        //ADDI
+        else if(opcode == 6'b001000)
+        begin
+            regWrite = 1;
+            aluOP = 2'b11;
             aluSrc = 1;
-            regWrite = 0;
         end
         //END
         else if(opcode == 6'b111111)
@@ -156,8 +172,8 @@ if(stage == 1) begin
         //$display("%b, %b, %b, %b, %b, %b, %b", opcode, rs, rt, rd, shamt, funct, immediate);
         //$display("%b, %b, %b, %b, %b, %b, %b, %b, %b", regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram);
         //$display("%b, %b", read_data_1, read_data_2);
-        // stage2=0;
-        // stage3=1;
+        //stage2=0;
+        //stage3=1;
     end
 end
 
