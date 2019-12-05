@@ -51,6 +51,18 @@ end
 always @(posedge clk)
 begin
 if(stage == 1) begin 
+        rd = 5'b0;
+        immediate = 32'b0;
+        shamt = 5'b0;
+        funct = 6'b0;
+        regDest = 0;
+        branch = 0;
+        memRead = 0;
+        memToReg = 0;
+        aluOP = 2'b00;
+        memWrite = 0;
+        aluSrc = 0;
+        regWrite = 0;
         //Parsing the input
         $readmemb("registers.dat", register);
         opcode = instruction[31:26];
@@ -68,6 +80,10 @@ if(stage == 1) begin
             flagR = 0;
             rs = instruction[25:21];
             rt = instruction[20:16];
+            if(instruction[15]==1)
+                begin
+                    immediate = 32'b11111111111111110000000000000000;
+                end
             immediate = immediate + instruction[15:0];  
         end
 
@@ -77,27 +93,13 @@ if(stage == 1) begin
         begin
             regDest = 1;
             memToReg = 0;
-<<<<<<< HEAD
-            aluOP = 2'b10;
-            memWrite = 0;
-            aluSrc = 0;
-=======
             aluOP = 2'b00;
->>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             regWrite = 1;
         end
         //Store
         else if(opcode == 6'b101011)
         begin
-<<<<<<< HEAD
-            regDest = 0;
-            branch = 0;
-            memRead = 0;
-            memToReg = 1'b0; //Dont care taken as 0
-            aluOP = 2'b00;
-=======
             aluOP = 2'b11;
->>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             memWrite = 1;
             aluSrc = 1;
             regWrite = 0;
@@ -106,14 +108,8 @@ if(stage == 1) begin
         else if(opcode == 6'b100011)
         begin 
             memRead = 1;
-<<<<<<< HEAD
-            memToReg = 1; //Dont care taken as 0
-            aluOP = 2'b00;
-            memWrite = 0;
-=======
             memToReg = 1;
             aluOP = 2'b11;
->>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             aluSrc = 1;
             regWrite = 1;        
         end
@@ -121,11 +117,6 @@ if(stage == 1) begin
         else if(opcode == 6'b000100)
         begin
             branch = 1;
-<<<<<<< HEAD
-            memRead = 0;
-            memToReg = 1'b0;
-=======
->>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             aluOP = 2'b01;
             aluSrc = 0;
         end
@@ -133,11 +124,6 @@ if(stage == 1) begin
         else if(opcode == 6'b000101)
         begin
             branch = 1;
-<<<<<<< HEAD
-            memRead = 0;
-            memToReg = 1'b0;
-=======
->>>>>>> d5554cb97898f700d01a29838c4e5af5c701c20b
             aluOP = 2'b01;
             aluSrc = 0;
         end
