@@ -11,32 +11,40 @@ module mipsProcessor(reset,clock);
     //intermediate signals -->
     wire [5:0] opcode,funct;
     wire [4:0] rs,rt,rd,shamt; 
-    wire [31:0]immediate,readData1,readData2,aluOut,memOut;
+    wire [31:0]immediate,readData1,readData2,aluOut,memOut,branchValue;
     //<--
     wire regDest, branch, memRead, memToReg , memWrite, aluSrc, regWrite, zero, endProgram; // control signals
     wire [1:0]aluOP;
-    wire [7:0] memaddress;
-    wire [4:0] address1,address2;
+    // wire [7:0] memaddress;
+    // wire [4:0] address1,address2;
     wire [31:0]curInstruction;
     // wire [31:0]resvalue;
     fetch fetchModule(pc,curInstruction,stage,clock);
     decode decodeModule(curInstruction,clock,opcode,rs,rt,rd,immediate,shamt,funct,regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram,readData1,readData2,stage);
-    alu aluModule(readData1,readData2,funct,aluOP,immediate,aluSrc,zero,aluOut,stage,clock);
-    memory memoryModule(memWrite,memRead,memaddress,readData2,memOut,stage,clock);
-    writeBack writeBackModule(regWrite,memToReg,regDest,address1,address2,memOut,aluOut,stage,clock);
+    alu aluModule(readData1,readData2,funct,aluOP,immediate,aluSrc,zero,aluOut,stage,clock,branchValue);
+    memory memoryModule(memWrite,memRead,aluOut[7:0],readData2,memOut,stage,clock);
+    writeBack writeBackModule(regWrite,memToReg,regDest,rt,rd,memOut,aluOut,stage,clock);
     initial begin
        pc = 4'b1000;
        stage = 3'b100;
     end
     always @ (negedge clock)
         begin
-        stage = (stage + 1)%5;
-        if(stage == 0)
-            if(branch == 1)
-                begin
-                end
-            else
-                pc = (pc + 1)%9;
+        if(endProgram != 1)
+            begin
+                stage = (stage + 1)%5;
+                if(stage == 0)
+                    begin
+                        if(branch == 1)
+                            begin
+                                pc = (pc+1+branchValue)%9;
+                                // pc = pc - 4;
+                                // pc = pc%9;
+                            end
+                        else
+                            pc = (pc + 1)%9;
+                    end
+            end
         end
 endmodule
 

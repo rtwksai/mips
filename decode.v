@@ -102,9 +102,9 @@ if(stage == 1) begin
             regDest = 0;
             branch = 0;
             memRead = 1;
-            memToReg = 0; //Dont care taken as 0
+            memToReg = 1; //Dont care taken as 0
             aluOP = 2'b00;
-            memWrite = 1;
+            memWrite = 0;
             aluSrc = 1;
             regWrite = 1;        
         end
