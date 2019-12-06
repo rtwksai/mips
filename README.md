@@ -54,6 +54,21 @@ We have created separate modules for fetch, decode, execute, memory and writebac
 
 ## Preview
 
+- Instructions are written here. We have implemented a code to find the factorial of 5.
+
+![Instructions File](https://github.com/DaKeiser/mips/blob/master/assets/Instructions_file.png)
+
+- All changes in Registers are found here
+
+![Registers File](https://github.com/DaKeiser/mips/blob/master/assets/Registers_file.png)
+
+- All the data in main memory is stored and written back here
+
+![Main Memory file](https://github.com/DaKeiser/mips/blob/master/assets/Data_Memory_file.png)
+
+- Check out the stages on how the instructions are executed here
+
+![Clock Cycles in GTKWave](https://github.com/DaKeiser/mips/blob/master/assets/Clock_cycle%20Count.png)
 
 ## Authors
 
