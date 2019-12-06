@@ -5,7 +5,9 @@
 `include "memory.v"
 
 module mipsProcessor(reset,clock,endl);
+    parameter INSTRUCTION_COUNT = 12;
     reg [3:0]pc;
+    integer count;
     input reset,clock;
     reg [2:0]stage; //stages of MIPS processor
     //intermediate signals -->
@@ -20,32 +22,34 @@ module mipsProcessor(reset,clock,endl);
     // wire [4:0] address1,address2;
     wire [31:0]curInstruction;
     // wire [31:0]resvalue;
-    fetch fetchModule(pc,curInstruction,stage,clock);
+    fetch fetchModule (pc,curInstruction,stage,clock);
     decode decodeModule(curInstruction,clock,opcode,rs,rt,rd,immediate,shamt,funct,regDest, branch, memRead, memToReg, aluOP, memWrite, aluSrc, regWrite, endProgram,readData1,readData2,stage);
     alu aluModule(readData1,readData2,funct,aluOP,immediate,aluSrc,zero,aluOut,stage,clock);
     memory memoryModule(memWrite,memRead,aluOut[7:0],readData2,memOut,stage,clock);
     writeBack writeBackModule(regWrite,memToReg,regDest,rt,rd,memOut,aluOut,stage,clock);
     initial begin
-       pc = 4'b1010;
+       pc = INSTRUCTION_COUNT-1;
        stage = 3'b100;
+       count = 0;
     end
     always @ (negedge clock)
         begin
         endl = endProgram;
         if(endProgram != 1)
             begin
+                count = count + 1;
                 stage = (stage + 1)%5;
                 if(stage == 0)
                     begin
                         if(branch == 1 && zero == 0)
                             begin
                                 pc = pc-immediate+1;
-                                pc = pc % 11;
+                                pc = pc % INSTRUCTION_COUNT;
                                 // pc = pc - 4;
                                 // pc = pc%9;
                             end
                         else
-                            pc = (pc + 1)%11;
+                            pc = (pc + 1)%INSTRUCTION_COUNT;
                     end
             end
         end

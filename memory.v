@@ -1,5 +1,4 @@
 module memory(memWrite,memRead,memaddress,invalue,outvalue,stage,clock);
-
     input memWrite,memRead,clock;
     input [7:0]memaddress;
     input [31:0]invalue;
@@ -16,6 +15,7 @@ module memory(memWrite,memRead,memaddress,invalue,outvalue,stage,clock);
         if(stage == 3) begin
             if(memWrite == 1) begin
                 Memory[memaddress]=invalue;
+                $writememb("mainMemory.dat",Memory);
             end
             else if(memRead == 1) begin
                 // $display("%d %d",Memory[memaddress],memaddress);
