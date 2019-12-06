@@ -1,12 +1,12 @@
 //Takes in a 4bit pc_input and returns a 32bit value at pc_input in memory
 module fetch(pc_input, pc_output, stage, clock);
-
+parameter instruction_count = 12;
 input [3:0]pc_input;
 input [2:0]stage;
 input clock;
 output reg[31:0]pc_output;
 // output reg stage2,stage1;
-reg [31:0]instruction[10:0];
+reg [31:0]instruction[instruction_count-1:0];
 
 initial begin
     $readmemb("fact.dat", instruction);
