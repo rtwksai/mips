@@ -1,8 +1,39 @@
-# mips
-Computer Architecture Project
-Design a ​ non-pipelined​ MIPS processor which will take as input- the instruction codes for an N factorial program and produces the necessary output. In how many clock cycles does the output of the program appear?
+<h1 align="center">MIPS Simulator 👨‍💻</h1>
+<p>
+  <a href="https://github.com/DaKeiser/mips/blob/master/LICENSE" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
 
-### Implementation
+> A simple non-pipelined 32-bit MIPS Simulator in Verilog
+
+## Install
+
+```sh
+git clone https://github.com/DaKeiser/mips.git
+```
+
+## Dependencies
+
+- [iverilog](http://iverilog.icarus.com/) HDL.
+- [GTKWave](http://gtkwave.sourceforge.net/).
+
+  * [Installation](http://inf­server.inf.uth.gr/~konstadel/resources/Icarus_Verilog_GTKWave_guide.pdf) Guide for iverilog and GTKWave
+
+## Usage
+
+```sh
+~/mips$ iverilog mipsProcessor.v
+~/mips$ ./a.out
+```
+
+## Run tests
+
+```sh
+~/mips$ gtkwave mips.vcd
+```
+
+## Description 
 
 We have created separate modules for fetch, decode, execute, memory and writeback operations.
 
@@ -20,7 +51,27 @@ We have created separate modules for fetch, decode, execute, memory and writebac
 - Drag and drop `clock` and `curInstruction[31:0]`. You will get an estimate of the number of cycles it is taking.
 - You can also check for any intermediate signal at any module to understand which signals are high or low in a particular instruction.
 
-Thanks
-- Kartik Sama
-- Soham Joshi
-- Sai Rithwik M
+
+## Preview
+
+
+## Authors
+
+👤 **Sai Rithwik M**
+
+* Github: [@DaKeiser](https://github.com/DaKeiser)
+
+👤 **Sama Sai Kartik**
+
+* Github: [@Kartik-Sama](https://github.com/Kartik-Sama)
+
+👤 **Soham Joshi**
+
+* Github: [@soham-joshi](https://github.com/soham-joshi)
+
+
+## 📝 License
+
+Copyright © 2019 [Sai Rithwik M](https://github.com/DaKeiser).<br />
+This project is [MIT](https://github.com/DaKeiser/mips/blob/master/LICENSE) licensed.
+_
