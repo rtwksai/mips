@@ -15,7 +15,7 @@ git clone https://github.com/DaKeiser/mips.git
 
 ## Dependencies
 
-- [iverilog](http://iverilog.icarus.com/) HDL.
+- [iVerilog](http://iverilog.icarus.com/) HDL.
 - [GTKWave](http://gtkwave.sourceforge.net/).
 
   * [Installation](http://inf­server.inf.uth.gr/~konstadel/resources/Icarus_Verilog_GTKWave_guide.pdf) Guide for iverilog and GTKWave
@@ -47,7 +47,7 @@ We have created separate modules for fetch, decode, execute, memory and writebac
 - Then do an `./a.out`
 - And find the response to your instruction set in either _registers.dat_ file or _mainMemory.dat_ file (Changes happening depends on the type of instruction you give)
 - In our premade _fact.dat_ file our output is visible in _registers.dat_ file in line number 20 or in _mainMemory.dat_ in line number 3.
-- If you want to see the number of cycles the instruction took head over to GTKWave by running _gtkwave mips.vcd_ and click on `mipsTb -> mainModule`
+- If you want to see the number of cycles the instruction took, head over to GTKWave by running `gtkwave mips.vcd` and click on `mipsTb -> mainModule`
 - Drag and drop `clock` and `curInstruction[31:0]`. You will get an estimate of the number of cycles it is taking.
 - You can also check for any intermediate signal at any module to understand which signals are high or low in a particular instruction.
 
