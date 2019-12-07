@@ -37,7 +37,7 @@ git clone https://github.com/DaKeiser/mips.git
 
 We have created separate modules for fetch, decode, execute, memory and writeback operations.
 
-- Instructions are given in the file _fact.dat_
+- Instructions are given in the file _fact.dat_. To convert the instructions into 32-bit binary codes, use [this](https://www.eg.bucknell.edu/~csci320/mips_web/).
 - Dont forget to add `11111111111111111111111111111111` at the end of the set of instructions
 - The value N for which the factorial must be found must be passed in it.
 - Changes that you need to make once you gave a specified set of instructions:
